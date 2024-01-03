@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Archive Button</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .archive-button {
+      background-color: #4CAF50; /* Green color */
+      color: white;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .archive-button:hover {
+      background-color: #45a049; /* Darker green color on hover */
+    }
+  </style>
+</head>
+<body>
+   <button class="archive-button" onclick="callApi()">Archive</button>
+
+  <script>
+    function callApi() {
+      // Replace the following console.log with your actual API call using fetch or other methods
+      console.log('API call initiated');
+
+      // If you want to perform an actual API call, you can use the fetch API like this:
+
+      fetch('http://localhost:7251/clear', {
+        method: 'GET',
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('API response:', data);
+        // Handle the API response here
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        // Handle errors here
+      });
+
+    }
+  </script>
+</body>
+</html>
