@@ -30,12 +30,12 @@ async function clear() {
       var blocks = data.results.map((it) => it.id);
       console.log("Deleting:", blocks);
 
-      blocks.map((blockId) => {
-        deleteBlock(blockId);
+      blocks.map( async (blockId) => {
+        await deleteBlock(blockId);
       });
     })
     .catch((error) => {
-      console.error("API Request Error:", error);
+      console.error("Clear API Request Error:", error);
     });
 }
 async function deleteBlock(blockId) {
@@ -49,8 +49,8 @@ async function deleteBlock(blockId) {
     method: "DELETE",
     headers: headers,
   };
-
-  fetch(apiUrl, options)
+  console.log("Exec:", apiUrl)
+  return fetch(apiUrl, options)
     .then((response) => {
       if (!response.ok) {
         throw new Error(`API request failed with status ${response.status}`);
@@ -61,7 +61,8 @@ async function deleteBlock(blockId) {
       console.log("API Response:", data);
     })
     .catch((error) => {
-      console.error("API Request Error:", error);
+      console.error("DeleteBlock API Request Error:", error);
+      deleteBlock(blockId)
     });
 }
 
@@ -163,6 +164,7 @@ app.use(cors());
 app.get('/clear', async (req, res) => {
   await archive();
   await clear()
+  console.log("Done!");
   res.status(200).json({ status: "success"});
 });
 
