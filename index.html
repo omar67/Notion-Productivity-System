@@ -1,57 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Archive Button</title>
-  <style>
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Archive Button</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
 
-    .archive-button {
-      background-color: #4CAF50; /* Green color */
-      color: white;
-      padding: 10px 20px;
-      font-size: 16px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
+      .archive-container {
+        text-align: center;
+      }
 
-    .archive-button:hover {
-      background-color: #45a049; /* Darker green color on hover */
-    }
-  </style>
-</head>
-<body>
-   <button class="archive-button" onclick="callApi()">Archive</button>
+      .archive-button {
+        background-color: #4caf50; /* Green color */
+        color: white;
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        position: relative;
+      }
 
-  <script>
-    function callApi() {
-      // Replace the following console.log with your actual API call using fetch or other methods
-      console.log('API call initiated');
+      .archive-button:hover {
+        background-color: #45a049; /* Darker green color on hover */
+      }
 
-      // If you want to perform an actual API call, you can use the fetch API like this:
+      .loading-message {
+        display: none;
+        margin-top: 10px;
+        font-weight: bold;
+      }
 
-      fetch('http://localhost:7251/clear', {
-        method: 'GET',
-      })
-      .then(response => response.json())
-      .then(data => {
-        console.log('API response:', data);
-        // Handle the API response here
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        // Handle errors here
-      });
+      .archive-button.loading {
+        opacity: 0.7;
+        pointer-events: none; /* Disable button while loading */
+      }
 
-    }
-  </script>
-</body>
+      .archive-button.loading + .loading-message {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="archive-container">
+      <button class="archive-button" onclick="callApi()">Archive</button>
+      <div class="loading-message" id="loadingMessage">Archiving...</div>
+    </div>
+
+    <script>
+      function callApi() {
+        const button = document.querySelector(".archive-button");
+        const loadingMessage = document.getElementById("loadingMessage");
+
+        // Show loading message
+        button.classList.add("loading");
+        loadingMessage.innerHTML = 'Archiving<span class="dots"></span>';
+
+        // Simulate an API call (replace with your actual API call)
+        // Replace the following console.log with your actual API call using fetch or other methods
+        console.log("API call initiated");
+
+        // If you want to perform an actual API call, you can use the fetch API like this:
+
+        fetch("http://localhost:7251/clear", {
+          method: "GET",
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("API response:", data);
+            button.classList.remove("loading");
+            loadingMessage.innerHTML = "Archiving...";
+            console.log("API call completed");
+            // Handle the API response here
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            // Handle errors here
+          });
+
+        // Add animation to the dots
+        setInterval(() => {
+          const dots = document.querySelector(".dots");
+          dots.innerHTML =
+            dots.innerHTML.length === 3 ? "" : dots.innerHTML + ".";
+        }, 500);
+      }
+    </script>
+  </body>
 </html>
